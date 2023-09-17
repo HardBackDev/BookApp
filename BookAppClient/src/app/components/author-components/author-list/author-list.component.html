@@ -1,0 +1,41 @@
+<button style="margin-top: 50px; left: 50px; position: fixed; width: fit-content; height: 50px; 
+background-color: green; color: aliceblue;" *ngIf="_authService.getRole() == 'Admin'" routerLink="create">
+    Create Author
+</button>
+
+<div class="row" style="height: 14vb; margin-left: 50%;">
+    <form style="margin-top: 10px;">
+        <input style="height: 40px; width: 40%;" type="text" placeholder="Search by name" #filter (keydown.enter)="filterAuthors(filter.value, $event)">
+        <button style="margin-left: 5px; margin-bottom: 5px;" class="btn btn-success" type="button" (click)="filterAuthors(filter.value, $event)">Search by name</button>
+    </form>
+</div>
+
+<div class="row" style="margin-top: 30px;">
+    <div class="col-md-8 offset-md-2">
+        <table class="table" style="border-width: 5px; border-color: black;">
+            <thead style="border-width: 5px; border-color: black;">
+                <tr class="text-center">
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let author of authors" style="border-width: 5px; border-color: black;">
+                <tr style="border-width: 5px; border-color: black;">
+                    <td class="column">
+                        {{author.name}}
+                    </td>
+                    <td class="column">
+                        <a *ngIf="_authService.getRole() == 'Admin'" class="btn btn-outline-primary"
+                        [routerLink]="['/authors/update', author.id]">Edit </a> |
+                        <a class="btn btn-outline-info" [routerLink]="['details',author.id]" >Details </a> |
+                        <a *ngIf="_authService.getRole() == 'Admin'" class="btn btn-danger text-white"
+                        (click)="deleteAuthor(author.id)" >Delete </a>
+                    </td>
+                </tr>
+            </tbody>
+            <button class="btn btn-success" style="width: fit-content; height: 35px; margin-left: 100%; margin-top: 20px;"
+            *ngIf="metadata.HasNext" (click)="loadNextAuthors()">
+                Next</button>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <form [formGroup]="authorForm" autocomplete="off" novalidate (ngSubmit)="createAuthor(authorForm.value)">
+      <div class="card card-body bg-light mb-2 mt-2">
+   
+        <div class="row mb-3">
+          <label for="title" class="col-form-label col-md-2">Name: </label>
+          <div class="col-md-5">
+            <input type="text" formControlName="name" id="name" class="form-control" />
+          </div>
+          <div class="col-md-5">
+            <em *ngIf="validateControl('name') 
+            && hasError('name', 'required')">Name is required</em>
+          </div>
+        </div>
+   
+        <div class="mb-3 row">
+          <label for="bio" class="col-form-label col-md-2">Bio: </label>
+          <div class="col-md-5">
+            <input type="text" formControlName="bio" id="bio" 
+            class="form-control"/>
+          </div>
+          <div class="col-md-5">
+            <em *ngIf="validateControl('bio') 
+            && hasError('bio', 'required')">Bio is required</em>
+          </div>
+        </div>
+
+        <br><br>
+   
+        <div class="mb-3 row">
+            <div class="offset-5 col-md-1">
+                <button type="submit" class="btn btn-info" [disabled]="!authorForm.valid || !authorForm" >Save</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-danger" (click)="redirectToAuthors()">Cancel</button>
+            </div>
+        </div>
+      </div>
+    </form>
+  </div>

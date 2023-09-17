@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 50px;">
+      <div class="container-fluid">
+        <a class="navbar-brand" [routerLink]="''" routerLinkActive="active" 
+        [routerLinkActiveOptions]="{exact: true}">BookApp Home</a>
+        <div class="collapse navbar-collapse" id="collapseNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="'authors'">Authors </a>
+            </li>
+            <li *ngIf="_authService.isUserAuthenticated()" class="nav-item">
+              <a class="nav-link" [routerLink]="'userbooks'">my books </a>
+            </li>
+            <li *ngIf="_authService.getRole() == 'Admin'" class="nav-item">
+              <a class="nav-link" [routerLink]="'addbook'">add book </a>
+            </li> 
+            <li class="nav-item">
+              <a style="position: absolute; left: 1500px;" class="nav-link" [routerLink]="'register'">sign-up</a>
+            </li>
+            <li>
+              <a *ngIf="!_authService.isUserAuthenticated()" class="nav-link" [routerLink]="'login'"
+              style="position: absolute; left: 1600px">login</a>
+              <a *ngIf="_authService.isUserAuthenticated()" class="nav-link" (click)="logOut()" 
+              style="position: absolute; left: 1600px">logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <router-outlet></router-outlet>
+  </div>
+</div>

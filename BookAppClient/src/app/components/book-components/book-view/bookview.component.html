@@ -1,0 +1,7 @@
+<div class="card" style="background-color: brown; padding: 20px;" [routerLink]="['/books/details', book.id]">
+    <img class="card-img-top" style="width: 200px; height: 300px" [src]="book.photo" alt="Book Image">
+    <div class="card-body">
+        <h5 class="card-title" style="color: aliceblue;">{{ book.title }}</h5>
+        <p class="card-text" style="color: aliceblue;">Genres: {{ book.genres }}</p>
+    </div>
+</div>

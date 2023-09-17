@@ -1,0 +1,30 @@
+.results {
+    background-color: bisque;
+    display: grid;
+    column-gap: 1px;
+    row-gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 500px));
+    justify-content: space-around;
+  }
+  input[type="text"] {
+    border: solid 1px var(--primary-color);
+    padding: 10px;
+    border-radius: 8px;
+    margin-right: 4px;
+    display: inline-block;
+    width: 30%;
+    background-color: sienna;
+    
+  }
+  
+  button {
+    padding: 10px;
+    border: solid 1px var(--primary-color);
+    background: var(--primary-color);
+    color: black;
+    background-color: green;
+    border-radius: 8px;
+  }
+  input::placeholder {
+    color: black;
+  }

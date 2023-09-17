@@ -1,0 +1,73 @@
+<div class="container-fluid">
+    <form [formGroup]="bookForm" autocomplete="off" novalidate (ngSubmit)="updateBook(bookForm.value)">
+      <div class="card card-body bg-light mb-2 mt-2">
+   
+        <div class="row mb-3">
+          <label for="title" class="col-form-label col-md-2">Title: </label>
+          <div class="col-md-5">
+            <input type="text" formControlName="title" id="title" 
+            class="form-control" />
+          </div>
+        </div>
+        
+        <div class="mb-3 row">
+          <label for="description" class="col-form-label col-md-2">description: </label>
+          <div class="col-md-5">
+            <input type="text" formControlName="description" id="description" 
+            class="form-control"/>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="authorId" class="col-form-label col-md-2">authorId: </label>
+          <div class="col-md-5">
+            <input type="number" formControlName="authorId" id="authorId" 
+            class="form-control"/>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="genres" class="col-form-label col-md-2">genres: </label>
+          <div class="col-md-5">
+            <input type="text" formControlName="genres" id="genres" 
+            class="form-control"/>
+          </div>
+        </div>
+   
+        <div class="mb-3 row">
+          <label for="photo" class="col-form-label col-md-2">photoUrl: </label>
+          <div class="col-md-5">
+            <input type="text" formControlName="photo" id="photo" 
+            class="form-control" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:15px;">
+          <div class="col-md-3">
+          <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;" accept=".pdf">
+          <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
+          </div>
+          <div class="col-md-4">
+          <span class="upload" *ngIf="progress > 0">
+              {{progress}}%
+          </span>
+          <span class="upload" *ngIf="message">
+              {{message}}
+          </span>
+          </div>
+        </div>
+
+        <br><br>
+   
+        <div class="mb-3 row">
+            <div class="offset-5 col-md-1">
+                <button type="submit" class="btn btn-info" [disabled]="!bookForm.valid" 
+                >Save</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-danger" (click)="redirectToBooks()">Cancel</button>
+            </div>
+        </div>
+      </div>
+    </form>
+  </div>

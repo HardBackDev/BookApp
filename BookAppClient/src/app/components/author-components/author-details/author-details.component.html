@@ -1,0 +1,28 @@
+<div style="margin-left: 30%; width: 50%; margin-top: 10%;">
+  <div class="row">
+    <div class="card" style="width: 700px; background-color: rgba(109, 129, 125, 0.998)">
+      <div class="card-body">
+        <div class="wrap">
+          <div>
+            <label>
+              Name: {{author.name}}
+            </label>
+          </div>
+          <hr>
+          <label>
+            Bio: {{author.bio}}
+          </label>
+          <hr>
+          <label>
+            <h5>author books:</h5>
+
+            <ul *ngFor="let book of books">
+              
+              <li [routerLink]="['/books/details', book.id]" style="cursor: pointer; color: blue;">{{book.title}}</li>
+            </ul>
+          </label>
+        </div>
+      </div>
+  </div>
+</div>
+
