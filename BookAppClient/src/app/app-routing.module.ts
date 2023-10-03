@@ -15,6 +15,7 @@ import { BookUpdateComponent } from './components/book-components/book-update/bo
 import { BookDeleteComponent } from './components/book-components/book-delete/book-delete.component';
 import { AuthorCreationComponent } from './components/author-components/author-creation/author-creation.component';
 import { AuthorUpdateComponent } from './components/author-components/author-update/author-update.component';
+import { AdminGuard } from './guards/admin.guard';
 
 
 const routes: Routes = [
@@ -23,13 +24,13 @@ const routes: Routes = [
   { path: 'userbooks', component: UserBooksComponent, canActivate: [AuthGuard] },
   { path: 'authors', component: AuthorListComponent},
   { path: 'authors/details/:id', component: AuthorDetailsComponent},
-  { path: 'authors/create', component: AuthorCreationComponent},
-  { path: 'authors/update/:id', component: AuthorUpdateComponent},
+  { path: 'authors/create', component: AuthorCreationComponent, canActivate: [AdminGuard]},
+  { path: 'authors/update/:id', component: AuthorUpdateComponent, canActivate: [AdminGuard]},
   { path: '', component:  BookHomeComponent},
   { path: 'books/details/:id', component: BookDetailsComponent },
-  { path: 'books/update/:id', component: BookUpdateComponent },
-  { path: 'books/delete/:id', component: BookDeleteComponent },
-  { path: 'addbook', component: BookCreationComponent},
+  { path: 'books/update/:id', component: BookUpdateComponent, canActivate: [AdminGuard] },
+  { path: 'books/delete/:id', component: BookDeleteComponent, canActivate: [AdminGuard] },
+  { path: 'addbook', component: BookCreationComponent, canActivate: [AdminGuard]},
   { path: '404', component: NotFoundComponent }, 
   { path: '**', redirectTo: '/404', pathMatch: 'full' },
 ];

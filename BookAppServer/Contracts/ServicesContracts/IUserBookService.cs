@@ -9,5 +9,6 @@ namespace BookAppServer.Contracts.ServicesContracts
     {
         Task AddToFavoriteBooks(int bookId, string userName);
         Task<(IEnumerable<BookDto> books, MetaData metaData)> GetUserBooks(string userName, BookParameters parameters);
+        Task<bool> CheckBookInFavorites(string userName, int bookId);
     }
 }

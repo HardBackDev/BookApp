@@ -42,5 +42,13 @@ namespace BookAppServer.Services
 
             return (books: booksDto, metaData: pagedResult.MetaData);
         }
+
+        public async Task<bool> CheckBookInFavorites(string userName, int bookId)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var result = await _repository.UserBookRepo.CheckBookInFavorites(user.Id, bookId);
+
+            return result;
+        }
     }
 }

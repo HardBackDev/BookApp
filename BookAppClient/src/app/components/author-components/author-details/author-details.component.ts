@@ -13,8 +13,7 @@ import { AuthorService } from 'src/app/services/author.service';
   styleUrls: ['./author-details.component.css']
 })
 export class AuthorDetailsComponent {
-
-  author: AuthorDetails
+  author: AuthorDetails;
   currentPage: number = 1;
   forwardDisabled: boolean;
   books: Book[] = []

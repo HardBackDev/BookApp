@@ -7,5 +7,6 @@ namespace BookAppServer.Contracts.RepositoriesContracts
     {
         void AddUserBook(int bookId, string userId);
         Task<PagedList<Book>> GetUserBooks(string userId, BookParameters parameters);
+        Task<bool> CheckBookInFavorites(string userId, int bookId);
     }
 }

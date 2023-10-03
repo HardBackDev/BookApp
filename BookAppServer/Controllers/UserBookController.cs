@@ -34,5 +34,13 @@ namespace BookAppServer.Controllers
 
             return Ok(pagedResult.books);
         }
+
+        [Authorize]
+        [HttpGet("{bookId:int}")]
+        public async Task<IActionResult> CheckBookIsFavorite(int bookId)
+        {
+            var result = await _services.UserBookService.CheckBookInFavorites(User.Identity.Name, bookId);
+            return Ok(result);
+        }
     }
 }

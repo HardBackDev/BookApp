@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { enviroment } from '../enviroments/enviroment';
+import { enviroment } from '../enviroments/environment';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { CommentForCreation } from '../models/comment_models/comment-creation';

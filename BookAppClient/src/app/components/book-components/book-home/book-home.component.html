@@ -1,6 +1,5 @@
-
 <div class="row" style="background-color: bisque; height: 14vb;">
-    <form style="margin-top: 10px;">
+    <form style="margin-top: 10px; margin-left: 30%;">
         <input type="text" placeholder="Filter by title" #filter (keydown.enter)="filterBooks(filter.value, $event)">
         <button class="primary" type="button" (click)="filterBooks(filter.value, $event)">Search</button>
     </form>
@@ -12,10 +11,12 @@
 </section>
 
 <div class="row" style="background-color: bisque; height: 60px;">
-    <button [disabled]="metadata && !metadata.HasPrevious" 
-    style="margin-left: 700px; display: inline; width: 70px; height: 50px; margin-top: 5px;" (click)="changePage(-1)">Back</button>
-    <input type="number" #pageNumber style="display: inline; width: 60px; height: 50px; margin-top: 5px" (keydown.enter)="setPage(pageNumber.value)" 
-     (input)="onInputChange($event)">
-    <button [disabled]="metadata && !metadata.HasNext" 
-    style="text-align: center; display: inline; width: 70px; height: 50px; margin-top: 5px" (click)="changePage(1)">Next</button>
+    <section style="margin-top: 5px;">
+        <button [disabled]="metadata && !metadata.HasPrevious" 
+        style="margin-left: 42.5%; display: inline; width: 70px; height: 50px; " (click)="changePage(-1)">Back</button>
+        <input type="number" #pageNumber style="display: inline; width: 60px; height: 50px;" (keydown.enter)="setPage(pageNumber.value)" 
+         (input)="onInputChange($event)">
+        <button [disabled]="metadata && !metadata.HasNext" 
+        style="text-align: center; display: inline; width: 70px; height: 50px;" (click)="changePage(1)">Next</button>
+    </section>
 </div>

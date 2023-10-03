@@ -1,9 +1,7 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Component, Input, inject } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Component, } from '@angular/core';
 import { Book } from 'src/app/models/book_models/book';
 import { BookService } from 'src/app/services/book.service';
-import { BookviewComponent } from 'src/app/components/book-components/book-view/bookview.component';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MetaData } from 'src/app/models/metadata';
 
 

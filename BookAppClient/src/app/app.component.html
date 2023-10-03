@@ -10,19 +10,19 @@
               <a class="nav-link" [routerLink]="'authors'">Authors </a>
             </li>
             <li *ngIf="_authService.isUserAuthenticated()" class="nav-item">
-              <a class="nav-link" [routerLink]="'userbooks'">my books </a>
+              <a class="nav-link" [routerLink]="'userbooks'">favorite books </a>
             </li>
-            <li *ngIf="_authService.getRole() == 'Admin'" class="nav-item">
+            <li *ngIf="_authService.isUserAdmin()" class="nav-item">
               <a class="nav-link" [routerLink]="'addbook'">add book </a>
             </li> 
             <li class="nav-item">
-              <a style="position: absolute; left: 1500px;" class="nav-link" [routerLink]="'register'">sign-up</a>
+              <a style="position: absolute; left: 90%;" class="nav-link" [routerLink]="'register'">sign-up</a>
             </li>
             <li>
               <a *ngIf="!_authService.isUserAuthenticated()" class="nav-link" [routerLink]="'login'"
-              style="position: absolute; left: 1600px">login</a>
+              style="position: absolute; left: 95%">login</a>
               <a *ngIf="_authService.isUserAuthenticated()" class="nav-link" (click)="logOut()" 
-              style="position: absolute; left: 1600px">logout</a>
+              style="position: absolute; left: 95%">logout</a>
             </li>
           </ul>
         </div>

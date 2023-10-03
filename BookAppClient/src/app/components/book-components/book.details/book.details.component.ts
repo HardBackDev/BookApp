@@ -14,6 +14,7 @@ import { MetaData } from 'src/app/models/metadata';
 import { UserService } from 'src/app/services/user.service';
 import { NgxSpinner } from 'ngx-spinner';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthorService } from 'src/app/services/author.service';
 
 @Component({
   selector: 'app-book.details',
@@ -32,9 +33,11 @@ export class BookDetailsComponent {
   commentText: string;
   editingComment: number = -1;
   _authService: AuthenticationService
+  isLoading: boolean
+  isBookInFavorites: boolean
   
   constructor(private bookService: BookService, private fileService: FileService, private userService: UserService,
-     private authService: AuthenticationService, private commentService: CommentService){
+     private authService: AuthenticationService, private commentService: CommentService, private authorService: AuthorService){
       this._authService = authService
       window.addEventListener('scroll', this.scroll);
      }
@@ -45,6 +48,14 @@ export class BookDetailsComponent {
     .getBook(this.bookId)
     .subscribe((res: BookDetails) =>{
       this.book = res;
+      this.authorService.getAuthor(this.book.authorId)
+      .subscribe((res: Author) => {
+        this.author = res
+      })
+      if(this.authService.isUserAuthenticated()){
+        this.userService.checkBookInFavorites(this.book.id)
+        .subscribe((res: boolean) => this.isBookInFavorites = res)  
+      }
     })
     
     this.commentService
@@ -71,7 +82,8 @@ export class BookDetailsComponent {
   }
 
   loadNextCommentts(): void {
-    if(this.metaData.CurrentPage + 1 <= this.metaData.TotalPages){
+    if(this.metaData.CurrentPage + 1 <= this.metaData.TotalPages && !this.isLoading){
+      this.isLoading = true
       this.getNextComments()
     }
   }
@@ -84,6 +96,7 @@ export class BookDetailsComponent {
       const newComments: Comment[] = res.body
       this.comments = this.comments.concat(newComments);
       this.metaData = JSON.parse(res.headers.get('X-Pagination'));
+      this.isLoading = false
     })
   }
   
@@ -114,7 +127,11 @@ export class BookDetailsComponent {
 
   addBookToMyFavoriteBooks(){
     this.userService.addToFavoriteBook(this.bookId)
-    .subscribe()
+    .subscribe(res =>{
+      this.userService.checkBookInFavorites(this.book.id)
+        .subscribe((res: boolean) => this.isBookInFavorites = res)  
+    
+    })
   }
 
   addComment(text: string, e){

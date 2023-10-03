@@ -12,10 +12,12 @@ import { group } from '@angular/animations';
   styleUrls: ['./user-register.component.css']
 })
 export class UserRegisterComponent {
-  errorMessage: any;
   userRegisterForm: FormGroup;
-  value: string = 'off';
+  errorMessage: any;
 
+  get jsonItems(): { key: string; value: any }[] {
+    return Object.entries(this.errorMessage || {}).map(([key, value]) => ({ key, value }));
+  }
 
 
   constructor(private repository: AuthenticationService, private router: Router) { }
@@ -27,12 +29,7 @@ export class UserRegisterComponent {
       phoneNumber: new FormControl('0',),
       password: new FormControl('', [Validators.required])
     });
-
     
-  }
-
-  get jsonItems(): { key: string; value: any }[] {
-    return Object.entries(this.errorMessage || {}).map(([key, value]) => ({ key, value }));
   }
 
   validateControl = (controlName: string) => {

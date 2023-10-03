@@ -28,5 +28,11 @@ namespace BookAppServer.Repositories.EntitiesRepo
 
         }
 
+        public async Task<bool> CheckBookInFavorites(string userId, int bookId)
+        {
+            return FindAll()
+                .Any(ub => ub.UserId == userId && ub.BookId == bookId);
+        }
+
     }
 }

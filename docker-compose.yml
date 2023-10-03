@@ -1,0 +1,36 @@
+version: '3.0'
+services:
+   db:
+     image: mcr.microsoft.com/mssql/server:2019-latest
+     ports:
+       - "1433:1433"
+     environment:
+       - ACCEPT_EULA=Y
+       - MSSQL_SA_PASSWORD=AwesomePass_1234
+     restart: always
+   bookappserver:
+     depends_on:
+       - db
+     image: myproject/bookappserver:runtime
+     build:
+       context: .
+       dockerfile: Dockerfile
+     ports:
+       - "8080:5000"
+       - "8081:5001"
+     environment:
+       - ASPNETCORE_ENVIRONMENT=Docker
+       - ASPNETCORE_Kestrel__Certificates__Default__Password=awesomepass
+       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/onlinestoreserver.pfx
+     volumes: 
+       - ${USERPROFILE}/.aspnet/https:/https/ 
+   bookappclient:
+     depends_on:
+       - bookappserver
+     image:  myproject/bookappclient:runtime
+     build:
+       context: ./BookAppClient
+       dockerfile: Dockerfile.Client
+     ports:
+       - "8082:80"
+      

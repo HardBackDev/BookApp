@@ -1,5 +1,5 @@
 <div class="row" style="background-color: bisque; height: 70px;">
-    <form style="margin-top: 10px;">
+    <form style="margin-top: 10px;  margin-left: 30%;">
         <input type="text" placeholder="Filter by title" #filter>
         <button class="primary" type="button" (click)="filterBooks(filter.value, $event)" 
         (keydown.enter)="filterBooks(filter.value, $event)">Search</button>
@@ -14,6 +14,6 @@
 <div class="row" style="background-color: bisque; height: 40px;">
     <button [disabled]="metadata && !metadata.HasPrevious" style="margin-left: 700px; display: inline; width: 70px;" (click)="changePage(-1)">Back</button>
     <input type="number" #pageNumber style="display: inline; width: 60px;"  (keydown.enter)="setPage(pageNumber.value)" 
-     (input)="onInputChange($event)">
+        (input)="onInputChange($event)">
     <button [disabled]="metadata && !metadata.HasNext" style="text-align: center; display: inline; width: 70px" (click)="changePage(1)">Next</button>
 </div>

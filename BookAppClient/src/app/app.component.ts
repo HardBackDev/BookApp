@@ -14,12 +14,13 @@ export class AppComponent implements OnInit {
   }
   
   ngOnInit(){
+
     const bodyElement = document.body;
+    
     this.renderer.setStyle(bodyElement, 'overflow-x', 'hidden');
   }
 
   logOut = () => {
     localStorage.removeItem("jwt");
-    localStorage.removeItem("userName");
   }
 }

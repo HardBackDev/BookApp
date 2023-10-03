@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { enviroment } from '../enviroments/enviroment';
+import { enviroment } from '../enviroments/environment';
 import { Book } from '../models/book_models/book';
 import { UserRegister } from '../models/user_models/user-register';
 import { UserForLogin } from '../models/user_models/user-for-login';
 import { JwtToken } from '../models/jwt-token';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { tokenGetter } from '../app.module';
 
 @Injectable({
   providedIn: 'root'
@@ -27,22 +28,30 @@ export class AuthenticationService {
   public getRole = () => {
     if(!this.isUserAuthenticated())
       return null
-    const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem('jwt'));
+    const decodedToken = this.jwtHelper.decodeToken(tokenGetter());
     const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
     return role
+  }
+
+  public isUserAdmin() : boolean{
+    if(!this.isUserAuthenticated())
+      return false
+      const decodedToken = this.jwtHelper.decodeToken(tokenGetter());
+      const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+      return role == 'Admin'
   }
 
   public getUserName = () => {
     if(!this.isUserAuthenticated())
       return null
-      const decodedToken = this.jwtHelper.decodeToken(localStorage.getItem('jwt'));
+      const decodedToken = this.jwtHelper.decodeToken(tokenGetter());
       const userName = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']
       return userName
       
   }
 
   public isUserAuthenticated = (): boolean => {
-    const token = localStorage.getItem("jwt");
+    const token = tokenGetter();
     
     if (token && !this.jwtHelper.isTokenExpired(token)){
       return true;
@@ -54,7 +63,7 @@ export class AuthenticationService {
     return {
       headers: new HttpHeaders({ 
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}` 
+        'Authorization': `Bearer ${tokenGetter()}` 
       })
     }
   }

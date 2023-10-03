@@ -39,14 +39,14 @@ export class AuthorListComponent {
 
   loadNextAuthors(){
     if(this.metadata.HasNext){
-      this.getAuthorsByParameters(this.metadata.CurrentPage + 1, this.nameFilter)
+      this.getAuthorsByParameters(this.metadata.CurrentPage + 1, this.nameFilter, true)
     }
   }
 
-  getAuthorsByParameters(pageNumber: number, nameFilter:string ){
+  getAuthorsByParameters(pageNumber: number, nameFilter:string, concat: boolean = false ){
     this.authorService.getAuthors(this.buildQueryParameters(pageNumber, nameFilter))
     .subscribe((res: HttpResponse<Author[]>) => {
-      this.authors = res.body
+      this.authors = concat ? this.authors.concat(res.body) : res.body
       this.metadata = JSON.parse(res.headers.get('X-Pagination'))
     })
   }

@@ -23,7 +23,7 @@ builder.Services.Configure<FormOptions>(options =>
 });
 
 var app = builder.Build();
-app.MigrateDB();
+await app.MigrateDB();
 
 app.UseCors("CorsPolicy");
 app.ConfigureExceptionHandler();

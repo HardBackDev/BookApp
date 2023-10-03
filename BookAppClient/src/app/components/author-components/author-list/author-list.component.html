@@ -16,6 +16,10 @@ background-color: green; color: aliceblue;" *ngIf="_authService.getRole() == 'Ad
             <thead style="border-width: 5px; border-color: black;">
                 <tr class="text-center">
                     <th>Name</th>
+
+                    <th class="column">
+                        Actions
+                    </th>
                 </tr>
             </thead>
             <tbody *ngFor="let author of authors" style="border-width: 5px; border-color: black;">
@@ -33,7 +37,7 @@ background-color: green; color: aliceblue;" *ngIf="_authService.getRole() == 'Ad
                 </tr>
             </tbody>
             <button class="btn btn-success" style="width: fit-content; height: 35px; margin-left: 100%; margin-top: 20px;"
-            *ngIf="metadata.HasNext" (click)="loadNextAuthors()">
+            *ngIf="metadata && metadata.HasNext" (click)="loadNextAuthors()">
                 Next</button>
         </table>
     </div>

@@ -1,7 +1,21 @@
-<div class="card" style="background-color: brown; padding: 20px;" [routerLink]="['/books/details', book.id]">
-    <img class="card-img-top" style="width: 200px; height: 300px" [src]="book.photo" alt="Book Image">
-    <div class="card-body">
-        <h5 class="card-title" style="color: aliceblue;">{{ book.title }}</h5>
-        <p class="card-text" style="color: aliceblue;">Genres: {{ book.genres }}</p>
+<div class="card" style="background-color: brown; padding: 20px; height: 350px;">
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <img style="width: 200px; height: 300px; border-radius: 10px;" [src]="book.photo" alt="Book Image">
+            </div>
+            <div class="col-sm" style="color: aliceblue;">
+                <h5>Title: </h5>
+                <h6>{{ book.title }}</h6>
+                <hr>
+                <h5>Genres: </h5>
+                <h6>{{ book.genres }}</h6>
+                <hr>
+                <h5>Author: </h5>
+                <a *ngIf="author" [routerLink]="['/authors/details', author.id]">{{ author.name }}</a>
+                <hr>
+                <button [routerLink]="['/books/details', book.id]" class="btn btn-info">Details</button>
+            </div>
+        </div>
     </div>
 </div>

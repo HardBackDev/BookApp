@@ -379,13 +379,13 @@ namespace BookAppServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3e1003ff-f502-4902-bd96-6f0aad0fb87b",
+                            Id = "88043be9-7838-4433-aee3-9fc4318647e6",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "3163950c-fbf1-4403-a393-fe9c0b981155",
+                            Id = "b2c3e36c-080a-48fb-bd52-2ce01be454f9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

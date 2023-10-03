@@ -1,21 +1,21 @@
 
-<div class="container"  style="overflow: auto">
+<div *ngIf="book" class="container"  style="overflow: auto">
   
   <img src="{{book.photo}}" style="float: left; width: 200px; height: 300px;"/>
   <section style="margin-left: 200px;">
     <label style="margin-left: 10px;">
-      Description: {{book.description}}
+      <h3>Description:</h3> {{book.description}}
     </label>
     
     <hr>
 
     <label style="margin-left: 10px;">
-      Genres: {{book.genres}}
+      <h3>Genres:</h3> {{book.genres}}
     </label>
     
     <hr>
     <label style="margin-left: 10px;">
-      <a [routerLink]="['/authors',book.authorId]">Author</a>
+      <a *ngIf="author" [routerLink]="['/authors/details', book.authorId]">Author: {{author.name}}</a>
     </label>
   </section>
 
@@ -23,8 +23,11 @@
     <div class="col-md-3">
       <button type="button" class="btn btn-success" style="margin: 10px;" (click)="download(book.filePath)">Download book pdf</button>
     </div>
-    <button *ngIf="_authService.isUserAuthenticated()" class="btn btn-success" 
-      style="width: fit-content; height: 40px;" (click)="addBookToMyFavoriteBooks()">Add book to my books</button>
+      <button *ngIf="_authService.isUserAuthenticated() && !isBookInFavorites" class="btn btn-success" 
+        style="width: fit-content; height: 40px;" (click)="addBookToMyFavoriteBooks()">Add book to favorites</button>
+    
+      <button *ngIf="_authService.isUserAuthenticated() && isBookInFavorites" class="btn btn-info" 
+        style="width: fit-content; height: 40px;" [disabled]="true">Book in favorites</button>
 
       <button *ngIf="_authService.getRole() == 'Admin'" class="btn btn-danger" [routerLink]="['/books/delete', bookId]"
       style="width: fit-content; height: 40px; margin-left: 20px;">delete</button>
@@ -43,6 +46,7 @@
     </div>
   </div>
 </div>
+
 <section class="comments" >
   <h1>Comments:</h1>
 

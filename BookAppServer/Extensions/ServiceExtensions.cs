@@ -20,7 +20,7 @@ namespace BookAppServer.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins(new[] { "http://localhost:4200" })
+                    builder => builder.WithOrigins(new[] { "http://localhost:4200", "http://localhost:8082" })
                     .WithExposedHeaders("X-Pagination")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
