@@ -16,6 +16,7 @@ export class AuthorListComponent {
   metadata: MetaData
   _authService: AuthenticationService
   nameFilter: string = ''
+  authorsLoading: boolean = true;
 
   constructor(private authorService: AuthorService, private authService: AuthenticationService){
     this._authService = authService
@@ -38,6 +39,7 @@ export class AuthorListComponent {
   }
 
   loadNextAuthors(){
+    this.authorsLoading = true
     if(this.metadata.HasNext){
       this.getAuthorsByParameters(this.metadata.CurrentPage + 1, this.nameFilter, true)
     }
@@ -48,6 +50,7 @@ export class AuthorListComponent {
     .subscribe((res: HttpResponse<Author[]>) => {
       this.authors = concat ? this.authors.concat(res.body) : res.body
       this.metadata = JSON.parse(res.headers.get('X-Pagination'))
+      this.authorsLoading = false
     })
   }
 

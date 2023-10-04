@@ -1,12 +1,14 @@
 ﻿using Azure.Core;
 using BookAppServer.Contracts.ServicesContracts;
 using BookAppServer.Dto.CommentDto;
+using BookAppServer.Exceptions;
 using BookAppServer.Extensions;
 using BookAppServer.Models;
 using BookAppServer.RequestFeatures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
@@ -63,16 +65,28 @@ namespace BookAppServer.Controllers
         [HttpPut("{commentId:int}")]
         public async Task<IActionResult> EditComment(int commentId, [FromBody] CommentForUpdate comment)
         {
+            CheckIsUserComment(comment.UserName, User);
             await _service.CommentService.EditComment(commentId, comment);
             return Ok();
         }
 
         [Authorize]
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteComment(int id)
+        [HttpDelete("{id:int}/{userName}")]
+        public async Task<IActionResult> DeleteComment(int id, string userName)
         {
+            CheckIsUserComment(userName, User);
             await _service.CommentService.DeleteComment(id);
             return Ok();
+        }
+
+        void CheckIsUserComment(string userName, ClaimsPrincipal user)
+        {
+            var userRole = user.Identities.First().Claims.First(c => c.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
+
+            if (!userName.Equals(user.Identity.Name) && userRole != "Admin")
+            {
+                throw new BadRequestException($"The non-admin user, {User.Identity.Name}, cannot edit or delete comments belonging to {userName}");
+            }
         }
     }
 }

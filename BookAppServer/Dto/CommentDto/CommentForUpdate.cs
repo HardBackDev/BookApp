@@ -6,5 +6,7 @@ namespace BookAppServer.Dto.CommentDto
     {
         [Required]
         public string Text { get; set; }
+        [Required]
+        public string UserName { get; set; }
     }
 }

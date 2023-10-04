@@ -11,16 +11,11 @@ import { AuthorService } from 'src/app/services/author.service';
 })
 export class BookviewComponent {
   @Input() book!: Book;
-  author: Author
 
-  constructor(private authorService: AuthorService){
+  constructor(){
 
   }
 
   ngOnInit(){
-    this.authorService.getAuthor(this.book.authorId)
-    .subscribe((res: Author) => {
-      this.author = res
-    })
   }
 }

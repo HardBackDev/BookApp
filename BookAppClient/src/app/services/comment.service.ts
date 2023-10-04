@@ -31,8 +31,8 @@ export class CommentService {
     return this.httpContext.put(`${this.commentUrl}/${commentId}`, comment, {headers: this.generateHeaders()})
   }
 
-  public deleteComment(commentId: number){
-    return this.httpContext.delete(`${this.commentUrl}/${commentId}`, {headers: this.generateHeaders()})
+  public deleteComment(commentId: number, userName: string){
+    return this.httpContext.delete(`${this.commentUrl}/${commentId}/${userName}`, {headers: this.generateHeaders()})
   }
 
   private generateHeaders = () => {

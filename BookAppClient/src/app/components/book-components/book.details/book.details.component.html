@@ -1,3 +1,4 @@
+<div *ngIf="bookLoading" id="loading-element" class="book-loader"></div>
 
 <div *ngIf="book" class="container"  style="overflow: auto">
   
@@ -29,12 +30,11 @@
       <button *ngIf="_authService.isUserAuthenticated() && isBookInFavorites" class="btn btn-info" 
         style="width: fit-content; height: 40px;" [disabled]="true">Book in favorites</button>
 
-      <button *ngIf="_authService.getRole() == 'Admin'" class="btn btn-danger" [routerLink]="['/books/delete', bookId]"
+      <button *ngIf="_authService.isUserAdmin()" class="btn btn-danger" [routerLink]="['/books/delete', bookId]"
       style="width: fit-content; height: 40px; margin-left: 20px;">delete</button>
 
-
-    <button *ngIf="_authService.getRole() == 'Admin'" class="btn btn-success" style="width: fit-content; height: 40px; margin-left: 20px;"
-     [routerLink]="['/books/update', bookId]">update book</button>
+      <button *ngIf="_authService.isUserAdmin()" class="btn btn-success" style="width: fit-content; height: 40px; margin-left: 20px;"
+      [routerLink]="['/books/update', bookId]">update book</button>
 
     <div class="col-md-4">
       <span class="download" *ngIf="progress > 0">
@@ -47,11 +47,11 @@
   </div>
 </div>
 
-<section class="comments" >
+<section *ngIf="!bookLoading" class="comments" >
   <h1>Comments:</h1>
 
   <form *ngIf="_authService.isUserAuthenticated()" style="margin-top: 10px;">
-    <input #comment style="width: 500px; height: fit-content; margin-bottom: 5px;" type="text"
+    <input #comment style="width: 500px; height: fit-content; margin-bottom: 5px;" type="text" id="comment-add-input"
      placeholder="add comment" (keydown.enter)="addComment(comment.value, $event)">
     <button class="primary" type="button" (click)="addComment(comment.value, $event)">add</button>
   </form>
@@ -59,17 +59,8 @@
   <section *ngFor="let comment of comments">
     <div class="row">
       <hr>
-      <a *ngIf="!isEditingComment(comment.id)" style="overflow-wrap: break-word; width: 80%; margin-bottom: 5px;">
-        {{comment.userName}}: {{comment.text}}
-      </a>
-      <section *ngIf="isEditingComment(comment.id)">
-        <input #thisComment style="width: 500px; height: fit-content;" type="text" (keydown.enter)="editComment(comment.id, thisComment.value, $event)"
-           placeholder="edit comment">
-        <button class="primary" type="button" (click)="editComment(comment.id, thisComment.value, $event)">add</button>
-      </section>
-
       <a style="margin-left: 94%; cursor: pointer;" >
-        <i *ngIf="_authService.getUserName() == comment.userName" id="options" class="material-icons" (click)="openOrCloseOptions(myDialog)"
+        <i *ngIf="_authService.isUserAdmin() || _authService.getUserName() == comment.userName" id="options" class="material-icons" (click)="openOrCloseOptions(myDialog)"
         style="display: flex;">
           more_vert
           <dialog #myDialog style="width: fit-content; height: fit-content; margin-left: 1100px;">
@@ -77,9 +68,17 @@
             <button (click)="openEdit(comment.id)" class="option">edit</button>
           </dialog>
         </i>
-        
       </a>
 
+      <a *ngIf="!isEditingComment(comment.id)" style="overflow-wrap: break-word; width: 80%; margin-bottom: 5px;">
+        {{comment.userName}}: {{comment.text}}
+      </a>
+      
+      <section *ngIf="isEditingComment(comment.id)">
+        <input #commentInput style="width: 500px; height: fit-content;" type="text" id="comment-edit-input" value="{{comment.text}}"
+          (keydown.enter)="editComment(comment.id, commentInput.value)" placeholder="edit comment">
+        <button class="primary" type="button" (click)="editComment(comment.id, commentInput.value)">add</button>
+      </section>
     </div>
   </section>
   <div *ngIf="metaData && metaData.TotalPages > metaData.CurrentPage" id="loading-element" class="loader"></div>

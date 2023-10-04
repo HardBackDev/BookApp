@@ -10,7 +10,7 @@ namespace BookAppServer.Extensions
         public static void AddPagedMetadataHeaders(this HttpResponse response, MetaData metaData)
         {
             response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
-            response.Headers.Add("Access-Control-Allow-Headers", "X-Pagination");
+            response.Headers.Add("Access-Control-Expose-Headers", "X-Pagination");
         }
     }
 }

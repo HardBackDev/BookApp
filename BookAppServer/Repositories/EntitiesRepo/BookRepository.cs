@@ -13,7 +13,11 @@ namespace BookAppServer.Repositories.EntitiesRepo
         }
         public async Task<PagedList<Book>> GetAll(BookParameters bookParameters)
         {
-            var books = await FindByCondition(b => b.Title.Contains(bookParameters.TitleFilter ?? ""))
+            var query = FindByCondition(b => b.Title.Contains(bookParameters.TitleFilter ?? ""));
+
+            if (bookParameters.IncludeAuthor)
+                query = query.Include(b => b.Author);
+            var books = await query
                 .OrderBy(b => b.Title)
                 .ToListAsync();
 

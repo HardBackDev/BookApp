@@ -16,6 +16,7 @@ export class BookHomeComponent {
   forwardDisabled: boolean;
   titleFilter: string = '';
   metadata: MetaData;
+  booksLoadings: boolean = true;
 
   constructor(private bookService: BookService){}
 
@@ -26,14 +27,18 @@ export class BookHomeComponent {
   filterBooks(titleFilter: string, e){
     e.preventDefault();
     this.titleFilter = titleFilter
+    this.booksLoadings = true
     this.getBooksByParameters(1, titleFilter)
   }
 
   changePage(dir: number){
+    this.booksLoadings = true
+    this.books = []
     this.getBooksByParameters(this.metadata.CurrentPage + dir, this.titleFilter)
   }
   
   setPage(page: string){
+    this.booksLoadings = true
     let intPage = Number.parseInt(page)
     this.getBooksByParameters(intPage, this.titleFilter)
   }
@@ -51,10 +56,11 @@ export class BookHomeComponent {
 
   getBooksByParameters(pageNumber: number, titleFilter: string) {
     this.bookService
-    .getBooks(`pagenumber=${pageNumber}&titlefilter=${titleFilter}`)
+    .getBooks(`pagenumber=${pageNumber}&titlefilter=${titleFilter}&includeAuthor=true`)
     .subscribe((res: HttpResponse<Book[]>) => {
         this.books = res.body
         this.metadata = JSON.parse(res.headers.get('X-Pagination'));
+        this.booksLoadings = false
     })
   }
 }

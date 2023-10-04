@@ -21,7 +21,7 @@
             <li>
               <a *ngIf="!_authService.isUserAuthenticated()" class="nav-link" [routerLink]="'login'"
               style="position: absolute; left: 95%">login</a>
-              <a *ngIf="_authService.isUserAuthenticated()" class="nav-link" (click)="logOut()" 
+              <a *ngIf="_authService.isUserAuthenticated()" class="nav-link" [routerLink]="''" (click)="logOut()" 
               style="position: absolute; left: 95%">logout</a>
             </li>
           </ul>

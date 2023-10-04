@@ -32,6 +32,8 @@ namespace BookAppServer.Controllers
         [HttpGet("{id:int}", Name = "BookById")]
         public async Task<IActionResult> GetBook(int id)
         {
+            Thread.Sleep(3000);
+
             var book = await _service.BookService.GetBook(id);
             return Ok(book);
         }

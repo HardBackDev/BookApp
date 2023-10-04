@@ -35,6 +35,9 @@ export class BookDetailsComponent {
   _authService: AuthenticationService
   isLoading: boolean
   isBookInFavorites: boolean
+  commentsPageSize: number = 6;
+  bookLoading: boolean = true;
+
   
   constructor(private bookService: BookService, private fileService: FileService, private userService: UserService,
      private authService: AuthenticationService, private commentService: CommentService, private authorService: AuthorService){
@@ -56,15 +59,10 @@ export class BookDetailsComponent {
         this.userService.checkBookInFavorites(this.book.id)
         .subscribe((res: boolean) => this.isBookInFavorites = res)  
       }
+      this.bookLoading = false
     })
     
-    this.commentService
-    .getBookComments(this.bookId, 'pageSize=6')
-    .subscribe((res: HttpResponse<Comment[]>) =>{
-      this.comments = res.body;
-      this.metaData = JSON.parse(res.headers.get('X-Pagination'));
-    })
-    
+    this.getComments(this.commentsPageSize);
   }
 
   scroll = () => {
@@ -82,7 +80,7 @@ export class BookDetailsComponent {
   }
 
   loadNextCommentts(): void {
-    if(this.metaData.CurrentPage + 1 <= this.metaData.TotalPages && !this.isLoading){
+    if(this.metaData && this.metaData.CurrentPage + 1 <= this.metaData.TotalPages && !this.isLoading){
       this.isLoading = true
       this.getNextComments()
     }
@@ -90,7 +88,7 @@ export class BookDetailsComponent {
 
   getNextComments(){
     this.commentService
-    .getBookComments(this.bookId, `pageNumber=${this.metaData.CurrentPage + 1}`)
+    .getBookComments(this.bookId, `pageNumber=${this.metaData.CurrentPage + 1}&pageSize=${this.commentsPageSize}`)
     .subscribe((res: HttpResponse<Comment[]>) =>{
 
       const newComments: Comment[] = res.body
@@ -134,25 +132,41 @@ export class BookDetailsComponent {
     })
   }
 
-  addComment(text: string, e){
-    e.preventDefault();
+  getComments(pageSize: number){
+    this.commentService
+    .getBookComments(this.bookId, `pageSize=${pageSize}`)
+    .subscribe((res: HttpResponse<Comment[]>) =>{
+      this.comments = res.body;
+      this.metaData = JSON.parse(res.headers.get('X-Pagination'));
+    })
+  }
+
+  addComment(text: string){
+    var input = document.getElementById('comment-add-input') as HTMLInputElement
+    if(input)
+      input.value = ""
+
     const comment : CommentForCreation = {
       text: text
     }
     
     this.commentService.addComment(this.bookId, comment)
-    .subscribe(res => window.location.reload())
+    .subscribe(res => this.getComments(this.commentsPageSize * this.metaData.CurrentPage))
   }
 
-  editComment(commentId: number, textForUpdate: string, e){
-    e.preventDefault();
+  editComment(commentId: number, textForUpdate: string){
 
     const commentForEdit: CommentForEdit = {
-      text: textForUpdate
+      text: textForUpdate,
+      userName: this.authService.getUserName()
     }
     
     this.commentService.editComment(commentId, commentForEdit)
-    .subscribe(res => window.location.reload());
+    .subscribe(res => {
+      this.editingComment = -1;
+      this.getComments(this.commentsPageSize * this.metaData.CurrentPage)
+
+    });
   }
   
   openOrCloseOptions(element: HTMLDialogElement){
@@ -174,8 +188,8 @@ export class BookDetailsComponent {
   }
 
   deleteComment(commentId: number){
-    this.commentService.deleteComment(commentId)
-    .subscribe(res => window.location.reload())
+    this.commentService.deleteComment(commentId, this.authService.getUserName())
+    .subscribe(res => this.getComments(this.commentsPageSize * this.metaData.CurrentPage))
   }
 
   //#endregion

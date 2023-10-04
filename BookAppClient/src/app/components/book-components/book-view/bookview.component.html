@@ -12,7 +12,7 @@
                 <h6>{{ book.genres }}</h6>
                 <hr>
                 <h5>Author: </h5>
-                <a *ngIf="author" [routerLink]="['/authors/details', author.id]">{{ author.name }}</a>
+                <a *ngIf="book.author" [routerLink]="['/authors/details', book.author.id]">{{ book.author.name }}</a>
                 <hr>
                 <button [routerLink]="['/books/details', book.id]" class="btn btn-info">Details</button>
             </div>

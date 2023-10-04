@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookAppServer.Dto.AuthorsDto;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookAppServer.Dto.BooksDto
 {
@@ -11,5 +12,6 @@ namespace BookAppServer.Dto.BooksDto
         public int AuthorId { get; set; }
         public string? Photo { get; set; }
         public string? FilePath { get; set; }
+        public AuthorDto? Author { get; set; }
     }
 }

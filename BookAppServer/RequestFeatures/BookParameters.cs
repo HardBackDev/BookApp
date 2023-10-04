@@ -4,6 +4,7 @@
     {
         public BookParameters() { PageSize = 6; }
         public string? TitleFilter { get; set; } = "";
+        public bool IncludeAuthor { get; set; }
 
     }
 }
