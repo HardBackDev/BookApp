@@ -17,7 +17,7 @@ namespace BookAppServer.Controllers
         [HttpPost("upload")]
         public IActionResult UploadPdf(IFormFile File)
         {
-            var path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", File.FileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", File.FileName);
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
                 File.CopyTo(fileStream);
@@ -28,9 +28,15 @@ namespace BookAppServer.Controllers
         [Route("download")]
         public async Task<IActionResult> Download([FromQuery] string fileUrl)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileUrl);
+            string path = fileUrl;
+            if (_webHostEnvironment.IsEnvironment("Docker"))
+            {
+                path = path.Replace("\\", "/");
+            }
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), path);
             if (!System.IO.File.Exists(filePath))
                 return NotFound();
+
             var memory = new MemoryStream();
             await using (var stream = new FileStream(filePath, FileMode.Open))
             {
